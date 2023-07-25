@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resultado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            height: 100%;
+        }
+
+        .container {
+            width: 50%;
+            height: fit-content;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+      
+        h1 {
+            text-align: center;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        .back-button {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+        .content{
+            width: 50%;
+            height: fit-content;
+            margin: 0 auto;
+            padding: 20px;
+           
+            border-radius: 10px;
+        }
+        img{
+            position: absolute;
+            top: 50%;
+            left: 26%;
+            width: auto;
+            height: fit-content;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dados recebidos:</h1>
+        <p>Sand (%): {{ sand }}</p>
+        <p>Clay (%): {{ clay }}</p>
+        <p>Silt (%): {{ silt }}</p>
+        <p>Density (g/cm³): {{ density }}</p>
+        <p>Org_Mat (%): {{ org_mat }}</p>
+        <p>Porosity (%): {{ porosity }}</p>
+        <div class="button-container">
+            <button class="back-button" onclick="window.location.href='/';">Voltar ao formulário</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <h1>Resultados</h1>
+        <img src="{{ url_for('plot') }}" alt="Gráfico de Resultados">
+    </div>
+</body>
+</html>

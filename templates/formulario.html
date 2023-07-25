@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulário</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+        }
+
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center; /* Centraliza os elementos do formulário */
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            display: inline-block; /* Faz com que os elementos do form fiquem lado a lado */
+            text-align: left; /* Alinha o texto à esquerda */
+        }
+
+        label, input {
+            display: block;
+            margin: 10px auto;
+        }
+
+        .input {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px auto; /* Adiciona margem entre as divs */
+        }
+
+        input[type="text"] {
+            width: 100%;
+            max-width: 200px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        button{
+            background-color: #388be4;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover{
+            background-color: #0056b3;
+        }
+        .places{
+            flex-direction: column;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+    <script>
+        function validarFormulario() {
+            var sand = parseFloat(document.getElementsByName('sand')[0].value);
+            var clay = parseFloat(document.getElementsByName('clay')[0].value);
+            var silt = parseFloat(document.getElementsByName('silt')[0].value);
+            var density = parseFloat(document.getElementsByName('density')[0].value);
+            var porosity = parseFloat(document.getElementsByName('porosity')[0].value);
+            var org_mat = parseFloat(document.getElementsByName('org_mat')[0].value);
+
+            // Verifica se os campos são números
+            if (isNaN(sand) || isNaN(clay) || isNaN(silt) || isNaN(density) || isNaN(porosity) || isNaN(org_mat)) {
+                alert("Todos os campos devem conter apenas números.");
+                return false;
+            }
+
+            // Verifica se os campos sand, clay e silt somam 100
+            if (sand + clay + silt !== 100) {
+                alert("A soma dos campos Sand, Clay e Silt deve ser igual a 100.");
+                return false;
+            }
+
+            return true;
+        }
+
+        function preencherAleatorio() {
+            // Gera valores aleatórios entre 0 e 100
+            var sand = Math.floor(Math.random() * 101);
+            var clay = Math.floor(Math.random() * (101 - sand));
+            var silt = 100 - sand - clay;
+            var density = parseFloat((Math.random() * 2).toFixed(2));
+            var porosity = parseFloat((Math.random() * 1).toFixed(3));
+            var org_mat = parseFloat(Math.floor(Math.random() * 5).toFixed(3));
+
+            // Preenche os campos do formulário com os valores aleatórios
+            document.getElementsByName('sand')[0].value = sand;
+            document.getElementsByName('clay')[0].value = clay;
+            document.getElementsByName('silt')[0].value = silt;
+            document.getElementsByName('density')[0].value = density;
+            document.getElementsByName('porosity')[0].value = porosity;
+            document.getElementsByName('org_mat')[0].value = org_mat;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Preencha o formulário:</h1>
+        <form method="POST" onsubmit="return validarFormulario();">
+            <div class="input">
+                <label for="sand">Sand (%):</label>
+                <input type="numeric" name="sand" required>
+            </div>
+            <div class="input">
+                <label for="clay">Clay (%):</label>
+                <input type="numeric" name="clay" required>
+            </div>
+            <div class="input">
+                <label for="silt">Silt (%):</label>
+                <input type="numeric" name="silt" required>
+            </div>
+            <div class="input">
+                <label for="density">Density (g/cm³):</label>
+                <input type="numeric" name="density" required>
+            </div>
+            <div class="input">
+                <label for="org_mat">org_mat (%):</label>
+                <input type="numeric" name="org_mat" required>
+            </div>
+
+            <div class="input">
+                <label for="porosity">Porosity (%):</label>
+                <input type="numeric" name="porosity" required>
+            </div>
+            <br>
+            <div class="places">
+
+                <input type="submit" value="Enviar">
+                <button type="button" onclick="preencherAleatorio()">Valores Aleatórios</button>
+
+            </div>
+        </form>
+    </div>
+</body>
+</html>
