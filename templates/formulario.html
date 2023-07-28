@@ -107,6 +107,7 @@
             var clay = Math.floor(Math.random() * (101 - sand));
             var silt = 100 - sand - clay;
             var density = parseFloat((Math.random() * 2).toFixed(2));
+            if(density < 1) density = parseFloat((density + 1).toFixed(2));
             var porosity = parseFloat((Math.random() * 1).toFixed(3));
             var org_mat = parseFloat(Math.floor(Math.random() * 5).toFixed(3));
 

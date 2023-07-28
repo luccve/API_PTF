@@ -2,8 +2,10 @@ from joblib import load
 from os import listdir, path
 from flask import Flask, render_template, request, send_file
 import matplotlib.pyplot as plt
-from numpy import array
+from numpy import array, mean
 import io
+from test_ptf import estimar_textura_solo
+from flask_cors import CORS
 
 models = {}
 resultados_globais = {}
@@ -15,6 +17,8 @@ for model in files_in_folder:
         models[name] = load(path_file)
 
 app = Flask(__name__)
+CORS(app)
+
 
 def create_graph(resultados):
     ordem = sorted(resultados.keys())
@@ -33,10 +37,10 @@ def create_graph(resultados):
     # Crie um gráfico de barras com os resultados para _cc
     plt.figure(figsize=(9, 9))
     plt.bar(nomes, diferenca_valores, color='blue', label='AD')
-
+    plt.axhline(y=mean(diferenca_valores), color='r', linestyle='--', linewidth=1, label=f'Média {round(mean(diferenca_valores), 2)}')
     for i, valor in enumerate(diferenca_valores):
         plt.text(i, valor + 0.01, str(round(valor, 2)), ha='center', va='bottom', fontsize=9, fontweight='bold')
-# Coloque na ordem clay - silt - sand - bulk_den - porosity - org_mat
+    
     plt.xlabel('Modelos')
     plt.ylabel('Resultados (mm/cm)')
     plt.title('Diferença entre Modelos CC e PMP')
@@ -72,7 +76,7 @@ def results(clay, silt, sand, density, porosity, org_mat):
     org_mat = float(org_mat)
     porosity = float(porosity)
 
-    predict = [[sand, clay, silt, density, org_mat, porosity]]
+    predict = [[clay, silt, sand, density, porosity, org_mat]]
     predict = array(predict)
     return predict
 
@@ -90,7 +94,8 @@ def formulario():
         porosity = request.form['porosity']
         # Coloque na ordem clay - silt - sand - bulk_den - porosity - org_mat
         resultados_globais = models_predict(results(clay, silt, sand, density, porosity, org_mat))
-        return render_template('resultado.html', sand=sand, clay=clay, silt=silt, density=density, org_mat=org_mat, porosity=porosity)
+        textura = estimar_textura_solo(float(sand), float(silt), float(clay))
+        return render_template('resultado.html', sand=sand, clay=clay, silt=silt, density=density, org_mat=org_mat, porosity=porosity, textura=textura)
 
     return render_template('formulario.html')
 
