@@ -2,24 +2,35 @@
 <html>
 <head>
     <title>Resultado</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
+       body {
             font-family: Arial, sans-serif;
             background-color: #f7f7f7;
             height: 100%;
+            margin: 0; /* Remover margens padrão do body */
         }
 
         .container {
-            width: 50%;
-            height: fit-content;
+            width: 90%; /* Ajustar a largura para 90% da tela em dispositivos móveis */
             margin: 0 auto;
             padding: 20px;
             background-color: #ffffff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
+            text-align: center;
         }
-      
-        h1 {
+
+        .content {
+            width: 90%; /* Ajustar a largura para 90% da tela em dispositivos móveis */
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        h1, h2 {
             text-align: center;
         }
 
@@ -43,20 +54,10 @@
         .back-button:hover {
             background-color: #0056b3;
         }
-        .content{
-            width: 50%;
-            height: fit-content;
-            margin: 0 auto;
-            padding: 20px;
-           
-            border-radius: 10px;
-        }
-        img{
-            position: absolute;
-            top: 50%;
-            left: 26%;
-            width: auto;
-            height: fit-content;
+
+        img {
+            width: 100%; /* Imagem ocupará 100% da largura do container */
+            height: auto; /* Altura ajustada automaticamente para manter proporções */
             object-fit: contain;
         }
     </style>

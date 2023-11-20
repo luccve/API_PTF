@@ -2,20 +2,21 @@
 <html>
 <head>
     <title>Formulário</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
+         body {
             font-family: Arial, sans-serif;
             background-color: #f7f7f7;
         }
 
         .container {
-            width: 50%;
+            width: 90%;
             margin: 0 auto;
             padding: 20px;
             background-color: #ffffff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
-            text-align: center; /* Centraliza os elementos do formulário */
+            text-align: center;
         }
 
         h1 {
@@ -23,8 +24,8 @@
         }
 
         form {
-            display: inline-block; /* Faz com que os elementos do form fiquem lado a lado */
-            text-align: left; /* Alinha o texto à esquerda */
+            display: inline-block;
+            text-align: left;
         }
 
         label, input {
@@ -36,12 +37,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 10px auto; /* Adiciona margem entre as divs */
+            margin: 10px auto;
         }
 
         input[type="text"] {
             width: 100%;
-            max-width: 200px;
+            max-width: none;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -60,7 +61,8 @@
             background-color: #0056b3;
         }
 
-        button{
+        button {
+            width: 100%;
             background-color: #388be4;
             color: #fff;
             padding: 10px 20px;
@@ -68,10 +70,12 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        button:hover{
+
+        button:hover {
             background-color: #0056b3;
         }
-        .places{
+
+        .places {
             flex-direction: column;
             display: flex;
             align-items: center;

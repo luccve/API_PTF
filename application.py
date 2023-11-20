@@ -2,9 +2,11 @@ from joblib import load
 from os import listdir, path
 from flask import Flask, render_template, request, send_file
 import matplotlib.pyplot as plt
+import matplotlib
+
 from numpy import array, mean
-import io
-from test_ptf import estimar_textura_solo
+from io import BytesIO
+from functions_ptf import PTF
 from flask_cors import CORS
 
 models = {}
@@ -16,6 +18,8 @@ for model in files_in_folder:
         path_file = path.join("./models", model)
         models[name] = load(path_file)
 
+#The last, Agg, is a non-interactive backend that can only write to files
+matplotlib.use('agg')
 app = Flask(__name__)
 CORS(app)
 
@@ -49,7 +53,7 @@ def create_graph(resultados):
     plt.tight_layout()  # Ajuste o layout para evitar cortes
 
     # Salve o gráfico em um objeto buffer de bytes
-    buffer = io.BytesIO()
+    buffer = BytesIO()
     plt.savefig(buffer, format='png')
     buffer.seek(0)
     plt.close()
@@ -94,7 +98,7 @@ def formulario():
         porosity = request.form['porosity']
         # Coloque na ordem clay - silt - sand - bulk_den - porosity - org_mat
         resultados_globais = models_predict(results(clay, silt, sand, density, porosity, org_mat))
-        textura = estimar_textura_solo(float(sand), float(silt), float(clay))
+        textura = PTF.estimar_textura_solo(float(sand), float(silt), float(clay))
         return render_template('resultado.html', sand=sand, clay=clay, silt=silt, density=density, org_mat=org_mat, porosity=porosity, textura=textura)
 
     return render_template('formulario.html')
@@ -108,4 +112,4 @@ def plot():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, threaded=False)
