@@ -1,5 +1,7 @@
+Gunicorn
 blinker==1.6.2
 click==8.1.6
+colorama==0.4.6
 contourpy==1.1.0
 cycler==0.11.0
 Flask==2.3.2
