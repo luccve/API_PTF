@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Home - Estevão Lucas Ramos da Silva</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,6 +47,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="header">
         <h1>Estevão Lucas Ramos da Silva</h1>
@@ -58,8 +60,58 @@
             Olá, meu nome é Estevão Lucas Ramos da Silva. Este é o meu trabalho de conclusão de curso (TCC) sobre PTFs.
         </p>
         <p>
-            Para fazer a requisão: 
+            Para fazer a requisão:
+        </p>
+        <br>
+        <b>HTTP</b>
+        <p>POST /ptf HTTP/1.1
+            Host: 127.0.0.1:5000
+            Content-Type: application/json
+            Content-Length: 113
+
+            {
+            "sand": 30,
+            "clay": 40,
+            "silt": 30,
+            "density": 1.5,
+            "org_mat": 0.02,
+            "porosity": 0.15
+            }</p>
+
+        <br>
+
+        <b>CURL</b>
+        <p>curl --location '127.0.0.1:5000/ptf' \
+            --header 'Content-Type: application/json' \
+            --data '{
+            "sand": 30,
+            "clay": 40,
+            "silt": 30,
+            "density": 1.5,
+            "org_mat": 0.02,
+            "porosity": 0.15
+            }'</p>
+
+        <br>
+        <b>Javascript Fetch</b>
+        <p>
+            var raw = JSON.stringify({
+            "sand": 30,
+            "clay": 40,
+            "silt": 30,
+            "density": 1.5,
+            "org_mat": 0.02,
+            "porosity": 0.15
+            });
+            <br>
+            fetch("127.0.0.1:5000/ptf", {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+            })
         </p>
     </div>
 </body>
+
 </html>
