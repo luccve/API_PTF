@@ -1,6 +1,6 @@
 from joblib import load
 from os import listdir, path
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, jsonify
 import matplotlib.pyplot as plt
 import matplotlib
 
@@ -67,7 +67,7 @@ def create_graph(resultados):
 def models_predict(inputs):
     results = {}
     for name, model in models.items():  # Iterar pelos pares (nome, modelo) no dicionário
-        results[name] = model.predict(inputs)
+        results[name] = float(model.predict(inputs))
     return results
 
 
@@ -85,23 +85,76 @@ def results(clay, silt, sand, density, porosity, org_mat):
     return predict
 
 
-@app.route('/', methods=['GET', 'POST'])
-def formulario():
-    global resultados_globais
-    if request.method == 'POST':
-        # Resgata os dados enviados pelo usuário
-        sand = request.form['sand']
-        clay = request.form['clay']
-        silt = request.form['silt']
-        density = request.form['density']
-        org_mat = request.form['org_mat']
-        porosity = request.form['porosity']
-        # Coloque na ordem clay - silt - sand - bulk_den - porosity - org_mat
-        resultados_globais = models_predict(results(clay, silt, sand, density, porosity, org_mat))
-        textura = PTF.estimar_textura_solo(float(sand), float(silt), float(clay))
-        return render_template('resultado.html', sand=sand, clay=clay, silt=silt, density=density, org_mat=org_mat, porosity=porosity, textura=textura)
+# @app.route('/', methods=['GET', 'POST'])
+# def formulario():
+#     global resultados_globais
+#     if request.method == 'POST':
+#         # Resgata os dados enviados pelo usuário
+#         sand = request.form['sand']
+#         clay = request.form['clay']
+#         silt = request.form['silt']
+#         density = request.form['density']
+#         org_mat = request.form['org_mat']
+#         porosity = request.form['porosity']
+#         # Coloque na ordem clay - silt - sand - bulk_den - porosity - org_mat
+#         resultados_globais = models_predict(results(clay, silt, sand, density, porosity, org_mat))
+        
+#         # textura = PTF.estimar_textura_solo(float(sand), float(silt), float(clay))
+#         # return render_template('resultado.html', sand=sand, clay=clay, silt=silt, density=density, org_mat=org_mat, porosity=porosity, textura=textura)
+#     return resultados_globais
+#     # return render_template('formulario.html')
 
-    return render_template('formulario.html')
+@app.route('/', methods=['GET'])
+def home():
+    return render_template('index.html')
+
+@app.route('/ptf', methods=['POST'])
+def send_ptfs():
+    try:
+        resultados_globais = {}
+        data = request.get_json()
+        print(data)
+        required_fields = ['sand', 'clay', 'silt', 'density', 'org_mat', 'porosity']
+        for field in required_fields:
+            if field not in data:
+                raise ValueError(f'O campo {field} é obrigatório.')
+       
+        if request.method == 'POST':
+            # Resgata os dados enviados pelo usuário
+            sand = data['sand']
+            clay = data['clay']
+            silt = data['silt']
+            density = data['density']
+            org_mat = data['org_mat']
+            porosity = data['porosity']
+            # Coloque na ordem clay - silt - sand - bulk_den - porosity - org_mat
+            resultados_globais = models_predict(results(clay, silt, sand, density, porosity, org_mat))
+            print(resultados_globais)
+        else:
+            resposta = {
+                'status': 'error',
+                'mensagem': 'Requisição mal formulada!'
+            }
+            return jsonify(resposta)
+            
+        resposta = {
+            'status': 'success',
+            'mensagem': 'Dados recebidos com sucesso',
+            'dados': resultados_globais
+        }
+        
+        return jsonify(resposta)
+    
+    except Exception as e:
+        resposta = {
+            'status': 'error',
+            'mensagem': 'Erro ao processar os dados',
+            'dados': str(e)
+        }
+        return jsonify(resposta),400
+   
+
+
 
 @app.route('/plot', methods=['GET', 'POST'])
 def plot():
