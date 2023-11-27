@@ -21,7 +21,7 @@ for model in files_in_folder:
 #The last, Agg, is a non-interactive backend that can only write to files
 matplotlib.use('agg')
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins='*')
 
 
 def create_graph(resultados):
